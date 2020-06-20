@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <f:metadata>
+  <f:event type="preRenderView" listener="#{student.loadGroupe}" />
+  <f:attribute name="id_s" value="#{user.id_s}" />
+</f:metadata> 
+    <h:head>
+    	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <title>Mes info</title>
+    </h:head>
+    <h:body> 
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" style="color:#F7B74D">Gestion des absences</a>
+			</div>
+			<ul class="nav navbar-nav">
+			  <li><a href="etudiant_accueil.xhtml?faces-redirect=true">Accueil</a></li>
+			  <li class="active"><a href="etudiant_info.xhtml?faces-redirect=true">Mes infos</a></li>
+			  <li><a href="etudiant_groupe.xhtml?faces-redirect=true">Mon groupe</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			  <li><a href="login.xhtml?faces-redirect=true" style="color:white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+			</ul>
+		  </div>
+		</nav>
+		
+		<div class="jumbotron" style="margin-top:-20px">
+			<div class="container">
+				<br/>
+		
+		<h:form>
+			<br/><br/><br/><br/>
+			<p:panelGrid columns="2" style="margin:20px;float:left;">
+			    <f:facet name="header">
+			        <p:graphicImage url="avatar.png" />
+			    </f:facet>
+			 
+			    <h:outputText value="Nom :" />
+			    <h:outputText value="#{student.lastname}" />
+			 
+			    <h:outputText value="Prenom :" />
+			    <h:outputText value="#{student.firstname}" />
+			 
+			 
+			    <h:outputText value="Groupe :" />
+			    <h:outputText value="#{student.groupe.grp_name}" />
+			</p:panelGrid>
+			
+			<br/>
+			<br/>
+		    <p:fieldset legend="Notes" toggleable="true" toggleSpeed="500" collapsed="true">
+		         <p:dataTable var="eval" value="#{student.evalutions}" widgetVar="etudiantsTable" multiViewState="true"
+			                  rowKey="#{eval.note}"
+			                 emptyMessage="Aucune note à afficher">
+			 
+			        <p:column headerText="MODULE" sortBy="#{eval.module}">
+			            <h:outputText value="#{eval.module}" />
+			        </p:column>
+			        
+			        <p:column headerText="ENSEIGNANT" sortBy="#{eval.note}">
+			            <h:outputText value="Pr. #{eval.ens}" />
+			        </p:column>
+			        
+			        <p:column headerText="NOTE"  sortBy="#{eval.note}" >
+			            <h:outputText value="#{eval.note}" />
+			        </p:column>
+  
+			    </p:dataTable>
+		    </p:fieldset>
+		    <br/>
+		     
+				       
+				       <p:fieldset legend="Absences" toggleable="true" toggleSpeed="500" collapsed="true">
+			       <p:dataTable id="etudnotes" var="abs" value="#{student.absence}" editable="true" style="height:350px;margin-bottom:20px;overflow-y: scroll;" >
+
+				       <p:ajax event="rowEdit" listener="#{student.onRowEdit}"/>
+				 
+				       <p:column headerText="Seance" sortBy="#{abs.date}">
+					            <h:outputText value="#{abs.date}  -  #{abs.num_heure}" />
+					   </p:column>
+					   
+				       <p:column headerText="Justification">
+				           <p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{abs.justif}" /></f:facet>
+				               <f:facet name="input"><p:inputText value="#{abs.justif}" style="width:100%" label="Justification"/></f:facet>
+				           </p:cellEditor>
+				       </p:column>
+				 
+				       <p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
+				   </p:dataTable>
+		    </p:fieldset>
+  
+			  
+		  
+		    
+		     
+		
+		</h:form>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				
+			</div>
+		</div>
+		
+
+ 	</h:body>
+</html>
+

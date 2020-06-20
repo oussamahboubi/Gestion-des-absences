@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+      <f:metadata>
+  	<f:event type="preRenderView" listener="#{admin.loadGroupes}" />
+	</f:metadata>
+    <h:head>
+    	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <title>Groupes</title>
+    </h:head>
+    <h:body>
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" style="color:#EEEEEE">Gestion des absences</a>
+			</div>
+			<ul class="nav navbar-nav">
+			  <li><a href="admin-accueil.xhtml?faces-redirect=true">Accueil</a></li>
+			  <li><a href="admin-absences.xhtml?faces-redirect=true">Absences</a></li>
+			  <li class="active"><a href="admin-groupes.xhtml?faces-redirect=true">Groupes</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			  <li><a href="login.xhtml?faces-redirect=true" style="color:white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+			</ul>
+		  </div>
+		</nav>
+		
+		<div class="jumbotron" style="margin-top:-20px">
+			<div class="container">
+				<br/><br/><br/>
+				<h:form>
+						
+					<h2>Liste des groupes</h2>
+					<br/>
+					
+				    <p:accordionPanel activeIndex="-1" multiple="true" value="#{admin.getGroupes()}" var="groupe">
+				        <p:tab title="#{groupe.grp_name}">
+				            <h:panelGrid columns="2" cellpadding="10">
+				            	<h:form>
+				            	    <!-- GROUPE 1 CONTENT -->
+								    <p:accordionPanel activeIndex="-1" multiple="true">
+								        <p:tab title="Etudiants Du Groupe">
+								            <h:form style="height:100px;width:700px;margin:auto;overflow-y: scroll;">
+											    <p:dataTable var="etudiant" value="#{groupe.students}" editable="true" 
+											    style="height:250px;overflow-y: scroll;margin-bottom:20px;" 
+											    selectionMode="single" rowKey="#{etudiant.lastname}" >
+											       <f:facet name="header">
+											           Liste des étudiants
+											       </f:facet>
+											   <p:column headerText="CNE" filterBy="#{etudiant.cne}" sortBy="#{etudiant.cne}" filterMatchMode="startsWith">
+												            <h:outputText value="#{etudiant.cne}" />
+												   </p:column>
+												   <p:column headerText="NOM" filterBy="#{etudiant.lastname}" sortBy="#{etudiant.lastname}" filterMatchMode="startsWith">
+											            <h:outputText value="#{etudiant.lastname}" />
+											        </p:column>
+											        
+											        <p:column headerText="PRENOM" filterBy="#{etudiant.firstname}" sortBy="#{etudiant.firstname}" filterMatchMode="startsWith">
+											            <h:outputText value="#{etudiant.firstname}" />
+											        </p:column>
+										 
+						
+											   </p:dataTable>
+											</h:form>
+								        </p:tab>
+								        
+								        <p:tab title="Historique Du Groupe">
+								                <h:form style="height:200px;margin:auto;">
+												    <p:dataTable id="tableStateDT" var="hist" value="#{groupe.histo}"
+												                 selectionMode="single" rowKey="#{hist.id}">
+												        <p:column headerText="DATE">
+												            <h:outputText value="#{hist.date}" />
+												        </p:column>
+												 
+												        <p:column headerText="LIBELLE DE L'ACTIVITÉ" >
+												            <h:outputText value="#{hist.activite}" />
+												        </p:column>
+												    </p:dataTable>
+												</h:form>
+								        </p:tab>
+								        
+						</p:accordionPanel>
+								</h:form>
+				            </h:panelGrid>
+				        </p:tab>
+				    </p:accordionPanel>
+				    
+				    <br/><br/>
+				    <div style="float: right;">
+				    <h:panelGrid columns="1" cellpadding="5">
+					    <p:commandButton value="Groupe" icon="ui-icon-plus" action="addGroupe.xhtml?faces-redirect=true" width="300"/>
+					</h:panelGrid>
+					<br/>
+					<h:panelGrid columns="1" cellpadding="5">				
+					    <p:commandButton value="Etudiant" icon="ui-icon-plus" action="addEtudiant.xhtml?faces-redirect=true" width="300"/>
+					</h:panelGrid>
+					<br/>
+					<h:panelGrid columns="1" cellpadding="5">				
+					    <p:commandButton value="Evénement" icon="ui-icon-plus" action="addHist.xhtml?faces-redirect=true" width="300"/>
+					</h:panelGrid>
+				    </div>
+
+					<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				</h:form>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				
+			</div>
+		</div>
+		
+
+ 	</h:body>
+</html>

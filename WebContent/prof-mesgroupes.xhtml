@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+    
+    <f:metadata>
+  <f:event type="preRenderView" listener="#{enseignant.loadGroupes}" />
+  <f:attribute name="id_ens" value="#{user.id_ens}" />
+</f:metadata> 
+
+
+    <h:head>
+    	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <title>Mes Groupes</title>
+    </h:head>
+    <h:body>
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" style="color:#EEEEEE">Gestion des absences</a>
+			</div>
+			<ul class="nav navbar-nav">
+			  <li><a href="prof-accueil.xhtml?faces-redirect=true">Accueil</a></li>
+			  <li><a href="prof-appel.xhtml?faces-redirect=true">Appel</a></li>
+			  <li class="active"><a href="prof-mesgroupes.xhtml?faces-redirect=true">Mes groupes</a></li>
+			  <li><a href="prof-notes.xhtml?faces-redirect=true">Notes</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			  <li><a href="login.xhtml?faces-redirect=true"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+			</ul>
+		  </div>
+		</nav>
+		
+		<div class="jumbotron" style="margin-top:-20px">
+			<div class="container">
+			
+				<br/><br/><br/>
+				<h:form>
+						
+					<h2>Liste de mes groupes</h2>
+					<br/>
+					
+				    <p:accordionPanel activeIndex="-1" multiple="true" value="#{enseignant.getGroupes()}" var="groupe">
+				        <p:tab title="#{groupe.grp_name}">
+				            <h:panelGrid columns="2" cellpadding="10">
+				            	<h:form>
+				            	    <!-- GROUPE 1 CONTENT -->
+								    <p:accordionPanel activeIndex="-1" multiple="true">
+								        <p:tab title="Etudiants Du Groupe">
+								            <h:form style="height:100px;width:700px;margin:auto;overflow-y: scroll;">
+											    <p:dataTable var="etudiant" value="#{groupe.students}" editable="true" 
+											    style="height:250px;overflow-y: scroll;margin-bottom:20px;" 
+											    selectionMode="single" rowKey="#{etudiant.lastname}" >
+											       <f:facet name="header">
+											           Liste des étudiants
+											       </f:facet>
+											   <p:column headerText="CNE" filterBy="#{etudiant.cne}" sortBy="#{etudiant.cne}" filterMatchMode="startsWith">
+												            <h:outputText value="#{etudiant.cne}" />
+												   </p:column>
+												   <p:column headerText="NOM" filterBy="#{etudiant.lastname}" sortBy="#{etudiant.lastname}" filterMatchMode="startsWith">
+											            <h:outputText value="#{etudiant.lastname}" />
+											        </p:column>
+											        
+											        <p:column headerText="PRENOM" filterBy="#{etudiant.firstname}" sortBy="#{etudiant.firstname}" filterMatchMode="startsWith">
+											            <h:outputText value="#{etudiant.firstname}" />
+											        </p:column>
+										 
+						
+											   </p:dataTable>
+											</h:form>
+								        </p:tab>
+								        
+								        <p:tab title="Historique Du Groupe">
+								                <h:form style="height:200px;margin:auto;">
+												    <p:dataTable id="tableStateDT" var="hist" value="#{groupe.histo}"
+												                 selectionMode="single" rowKey="#{hist.id}">
+												        <p:column headerText="DATE">
+												            <h:outputText value="#{hist.date}" />
+												        </p:column>
+												 
+												        <p:column headerText="LIBELLE DE L'ACTIVITÉ" >
+												            <h:outputText value="#{hist.activite}" />
+												        </p:column>
+												    </p:dataTable>
+												</h:form>
+								        </p:tab>
+								        
+								        <p:tab title="Séances Du Groupe">
+								             <h:form style="height:250px;width:700px;margin:auto;">
+											    <p:dataTable var="s" value="#{groupe.seances}" widgetVar="seaTable" multiViewState="true"
+											                 rows="10" paginator="true"
+											                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											                 rowsPerPageTemplate="5,10,20"
+											                 selectionMode="single" selection="#{s.seance}"  rowKey="#{s.date}"
+											                 emptyMessage="Aucune seance">
+											 
+											        <p:column headerText="Date" sortBy="#{s.date}">
+											            <h:outputText value="#{s.date}" />
+											        </p:column>
+											        
+											        <p:column headerText="Heure">
+											            <h:outputText value="#{s.num_heure}" />
+											        </p:column>
+											        
+											        <p:column headerText="Groupe">
+											            <h:outputText value="#{s.groupe}" />
+											        </p:column>
+											        
+											        <p:column headerText="Module">
+											            <h:outputText value="#{s.module}" />
+											        </p:column>
+											 
+											        <p:column headerText="APPEL EFFECTUÉ">
+												        <p:selectBooleanButton id="select" value="#{s.appel}" onLabel="Yes" offLabel="No"
+												         onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" noSelectionOption="true"/>
+											        </p:column>
+											    </p:dataTable>
+											</h:form>
+								        </p:tab>
+								        
+								        
+	
+								        
+								    </p:accordionPanel>
+								</h:form>
+				            </h:panelGrid>
+				        </p:tab>
+				    </p:accordionPanel>
+
+					<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+					<br/><br/><br/><br/>
+				</h:form>
+				
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				
+			</div>
+		</div>
+		
+
+ 	</h:body>
+</html>

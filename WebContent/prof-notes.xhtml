@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <f:metadata>
+  <f:event type="preRenderView" listener="#{enseignant.loadGroupes}" />
+  <f:attribute name="id_ens" value="#{user.id_ens}" />
+</f:metadata>
+    <h:head>
+    	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <title>Notes</title>
+    </h:head>
+    <h:body> 
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" style="color:#F7B74D">Gestion des absences</a>
+			</div>
+			<ul class="nav navbar-nav">
+			  <li><a href="prof-accueil.xhtml?faces-redirect=true">Accueil</a></li>
+			  <li><a href="prof-appel.xhtml?faces-redirect=true">Appel</a></li>
+			  <li><a href="prof-mesgroupes.xhtml?faces-redirect=true">Mes groupes</a></li>
+			  <li class="active"><a href="prof-notes.xhtml?faces-redirect=true">Notes</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			  <li><a href="login.xhtml?faces-redirect=true" style="color:white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+			</ul>
+		  </div>
+		</nav>
+		
+		<div class="jumbotron" style="margin-top:-20px">
+			<div class="container">
+				<br/>
+					
+				<h:form>
+					<h:panelGrid columns="3" style="margin:auto;">
+						<h3>Entrer les notes de :</h3>
+					</h:panelGrid>
+					<br/>
+					<h:panelGrid columns="5" style="margin:auto;">
+	
+				        <p:selectOneMenu id="select1" value="#{enseignant.selectedSeance2}"   style="width:350px;">
+						    <f:selectItem itemLabel="Select groupe / module" itemValue="" />
+				            <f:selectItems value="#{enseignant.seances2}" var="s" itemLabel="#{s.groupe} - #{s.module}" itemValue="#{s.id}" />
+				            
+				   
+				        </p:selectOneMenu>
+				        <br/><br/>
+		        		</h:panelGrid>
+		        		<br/>
+		        		<h:panelGrid style="margin:auto;">
+							<p:commandButton value="Valider" styleClass="save" action="#{enseignant.noter}"/>
+						</h:panelGrid>
+					</h:form>
+				
+				<div class="text-center"><h5>___________________________________________________________________________________________________________________</h5><br/></div>
+				
+				<h:form style="height:50%;width:70%;margin:auto;"> 
+				   <p:dataTable id="etud" var="etudiant" value="#{enseignant.students2}" editable="true" style="height:350px;margin-bottom:20px;" >
+				       <f:facet name="header">
+				       </f:facet>
+				 
+				       <p:ajax event="rowEdit" listener="#{enseignant.onRowEdit}"/>
+				 
+				       <p:column headerText="CNE" filterBy="#{etudiant.cne}" sortBy="#{etudiant.cne}" filterMatchMode="startsWith">
+					            <h:outputText value="#{etudiant.cne}" />
+					   </p:column>
+					   
+					   <p:column headerText="NOM" filterBy="#{etudiant.lastname}" sortBy="#{etudiant.lastname}" filterMatchMode="startsWith">
+				            <h:outputText value="#{etudiant.lastname}" />
+				        </p:column>
+				        
+				        <p:column headerText="PRENOM" filterBy="#{etudiant.firstname}" sortBy="#{etudiant.firstname}" filterMatchMode="startsWith">
+				            <h:outputText value="#{etudiant.firstname}" />
+				        </p:column>
+			 
+				       <p:column headerText="Note" >
+				           <p:cellEditor>
+				               <f:facet name="output"><h:outputText value="#{etudiant.note}" /></f:facet>
+				               <f:facet name="input"><p:inputText value="#{etudiant.note}" style="width:100%" label="Note"/></f:facet>
+				           </p:cellEditor>
+				       </p:column>
+				 
+				       <p:column style="width:32px">
+				           <p:rowEditor />
+				       </p:column>
+				   </p:dataTable>
+				     
+				    
+					</h:form>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				
+			</div>
+		</div>
+		
+
+ 	</h:body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <f:metadata>
+  <f:event type="preRenderView" listener="#{admin.loadAbsences}" />
+</f:metadata>
+    <h:head>
+    	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <title>Les absences</title>
+    </h:head>
+    <h:body>
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+		  <div class="container-fluid">
+			<div class="navbar-header">
+			  <a class="navbar-brand" style="color:#EEEEEE">Gestion des absences</a>
+			</div>
+			<ul class="nav navbar-nav">
+			  <li><a href="admin-accueil.xhtml?faces-redirect=true">Accueil</a></li>
+			  <li class="active"><a href="admin-absences.xhtml?faces-redirect=true">Absences</a></li>
+			  <li><a href="admin-groupes.xhtml?faces-redirect=true">Groupes</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			  <li><a href="login.xhtml?faces-redirect=true" style="color:white"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+			</ul>
+		  </div>
+		</nav>
+		
+		<div class="jumbotron" style="margin-top:-20px">
+			<div class="container">
+				<br/><br/><br/>
+				<h2>Liste des absences:</h2>
+				<br/><br/>
+				 <h:form style="width:95%;margin:auto;">
+				 	<p:dataTable id="tableStateDT" var="abs" value="#{admin.absences}" widgetVar="etudiantsTable" multiViewState="true"
+	                 rows="5" paginator="true"
+	                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                 rowsPerPageTemplate="5,10,20"
+	                  rowKey="#{abs.cne}"
+	                 emptyMessage="Aucun absence à afficher">
+				       <f:facet name="header">
+				           
+				       </f:facet>
+				 
+				       <p:column headerText="DATE" filterBy="#{abs.date}" sortBy="#{abs.date}" filterMatchMode="startsWith">
+					            <h:outputText value="#{abs.date}  -  #{abs.num_heure}" />
+					   </p:column>
+					   
+					   <p:column headerText="Groupe" >
+				            <h:outputText value="#{abs.groupe}" />
+				        </p:column>
+				        
+				        <p:column headerText="CNE">
+				            <h:outputText value="#{abs.cne}" />
+				        </p:column>
+				        
+				        <p:column headerText="Nom Etudiant">
+				            <h:outputText value="#{abs.nom_complet}" />
+				        </p:column>
+				       
+	
+				       <p:column headerText="Justification">
+					            <h:outputText value="#{abs.justif}" />
+					   </p:column>
+					   
+					   <p:column headerText="Accepter Justification">
+					   <p:inputSwitch value="#{abs.accepter}" onLabel="Oui" offLabel="Non" >
+					        	<p:ajax listener="#{admin.rowedit(abs.accepter,abs.id_student,abs.id_seance)}"/>
+					        	</p:inputSwitch>
+				        </p:column>
+				   </p:dataTable>
+				</h:form>
+				<br/><br/><br/><br/><br/><br/>
+				<br/><br/><br/><br/><br/><br/>
+			</div>
+		</div>
+		
+
+ 	</h:body>
+</html>
